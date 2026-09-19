@@ -75,3 +75,6 @@ The tables (`users`, `scores`) are created on API startup with `CREATE TABLE IF 
 ## Development settings (review before production)
 - `JWT_KEY`, the database passwords, and `user1/pass` are development defaults.
 - Not included: HTTPS, login rate limiting, and protection against tampered scores (the values reported by the client are stored as is).
+
+## License
+Released under the [MIT License](LICENSE).
