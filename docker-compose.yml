@@ -1,0 +1,33 @@
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass}
+      MYSQL_DATABASE: unity_test
+      MYSQL_USER: app
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-apppass}
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      # Check over TCP (the temporary server used during initialization does not accept TCP)
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: ./src/ScoreApi
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__Default: "Server=db;Port=3306;Database=unity_test;User ID=app;Password=${MYSQL_PASSWORD:-apppass};DateTimeKind=Utc"
+      Jwt__Key: ${JWT_KEY:-dev-only-secret-change-me-0123456789abcdef}
+      # Serve the API docs (/scalar/v1) only in Development
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+    ports:
+      # These are development credentials, so accept connections from this machine only
+      - "127.0.0.1:${API_PORT:-5080}:8080"
+
+volumes:
+  db-data:
