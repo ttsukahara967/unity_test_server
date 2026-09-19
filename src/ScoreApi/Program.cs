@@ -60,6 +60,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(options => options
         .WithTitle("Unity Test Score API")
+        .ExpandAllTags()
         .AddPreferredSecuritySchemes(ApiDocumentation.BearerScheme));
 }
 

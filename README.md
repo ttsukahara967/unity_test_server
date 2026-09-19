@@ -25,9 +25,13 @@ To change settings, copy `.env.example` to `.env` and edit it.
 
 After starting, open <http://localhost:5080/scalar/v1> to browse the API and try it out in place (the OpenAPI definition is at `/openapi/v1.json`).
 
+![Scalar API docs overview: the endpoint list on the left and the Bearer token field](docs/scalar-overview.png)
+
 1. Run `POST /api/login` and copy the `token`.
 2. Paste it into **Authentication → Bearer Token** at the top of the page.
 3. You can now try the endpoints with a lock icon (submit score, my scores, ranking).
+
+![Scalar "Submit a score" page showing the request body, a curl example, and the responses](docs/scalar-submit-score.png)
 
 The docs are served only in the `Development` environment. `docker-compose.yml` defaults to `Development`; set `ASPNETCORE_ENVIRONMENT=Production` in `.env` to disable them.
 
